@@ -13,7 +13,7 @@ public class Main {
      */
     public static void main(String[] args) {
         Example example = new Example(0);
-        System.out.println("Starting...");
+        System.out.println("Starting.");
         Gui.main(args);
         System.out.println("Exiting...");
     }
