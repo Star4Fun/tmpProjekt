@@ -2,6 +2,8 @@ package mm.model;
 
 import org.junit.jupiter.api.Test;
 
+import mm.model.physics.PhysicMathUtils;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -13,7 +15,6 @@ public class ExampleTest {
      */
     @Test
     public void foo() {
-        Example example = new Example(23);
-        assertEquals(42, example.foo(12), "foo performs a correct computation");
+        assertEquals(32, PhysicMathUtils.meterToPixel(1), "PhysicsMathUtils returns the correct pixel size for a meter.");
     }
 }

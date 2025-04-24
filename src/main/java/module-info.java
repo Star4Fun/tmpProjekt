@@ -5,6 +5,7 @@ module mm {
     requires javafx.controls;
     requires transitive javafx.graphics;
     requires jbox2d.library;
+    requires org.slf4j;
     
-    exports mm.gui;
+    exports mm.render;
 }

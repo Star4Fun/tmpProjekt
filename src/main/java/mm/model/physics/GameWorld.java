@@ -18,15 +18,33 @@ public class GameWorld {
         
     }
 
+    public void addGround(float w, float h) {
+        PolygonShape s = new PolygonShape();
+		s.setAsBox(PhysicMathUtils.pixelToMeter(w/2), PhysicMathUtils.pixelToMeter(h/8));
+        BodyDef body = new BodyDef();
+        body.type = BodyType.STATIC;
+        body.position = new Vec2(0, 0);
+        body.active = true;
+
+        FixtureDef fixture = new FixtureDef();
+        fixture.shape = s;
+        fixture.restitution = 0.2f;
+	    fixture.density = 0.333f;
+	    fixture.friction = 0.01f;
+        Body boxBody = box2dWorld.createBody(body);
+        boxBody.createFixture(fixture);
+    }
+
     public Body getBox() {
-        float w = 32;
-        float h = 32;
+        float w = 128;
+        float h = 128;
         PolygonShape s = new PolygonShape();
 		s.setAsBox(PhysicMathUtils.pixelToMeter(w/2), PhysicMathUtils.pixelToMeter(h/2));
         BodyDef body = new BodyDef();
         body.type = BodyType.DYNAMIC;
-        body.position = new Vec2(5, 5);
+        body.position = new Vec2(PhysicMathUtils.pixelToMeter(600), PhysicMathUtils.pixelToMeter(500));
         body.active = true;
+        body.angle = (float)Math.PI/6;
 
         FixtureDef fixture = new FixtureDef();
         fixture.shape = s;
