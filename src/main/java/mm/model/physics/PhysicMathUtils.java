@@ -6,8 +6,8 @@ import org.jbox2d.dynamics.Body;
 public class PhysicMathUtils {
 
 	//Games ratio (meter to pixel)
-	public static int ratio = 30;
-	
+	public static int ratio = 64;
+
 	/**
 	 * 
 	 * @param vec0 the target

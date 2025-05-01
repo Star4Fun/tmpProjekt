@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
@@ -120,10 +121,10 @@ public class JavaFXRenderer implements IRenderer {
             return;
         }
         if(shouldFill) {
-            this.ctx.fillOval(x-radius/2, y-radius/2, radius, radius);
+            this.ctx.fillOval(x-radius, y-radius, radius*2, radius*2);
         }
         if(shouldStroke) {
-            this.ctx.strokeOval(x-radius/2, y-radius/2, radius, radius);
+            this.ctx.strokeOval(x-radius, y-radius, radius*2, radius*2);
         }
     }
 
@@ -210,6 +211,18 @@ public class JavaFXRenderer implements IRenderer {
         public RenderStyle copy() {
             return new RenderStyle(this.fill, this.stroke);
         }
+    }
+
+    @Override
+    public void drawTexture(int textureId, float x, float y, float w, float h, float angle) {
+        Image textureInstance = Textures.getForId(textureId).getTexture(Image.class);
+
+        this.ctx.save();
+        this.ctx.translate(x+w/2, y+h/2);
+        this.ctx.rotate(angle);
+        this.ctx.drawImage(textureInstance, Math.round(-w/2), Math.round(-h/2), w, h);
+            
+        this.ctx.restore();
     }
 
 }

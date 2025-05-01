@@ -2,7 +2,6 @@ package mm.render;
 
 import org.jbox2d.common.Vec2;
 
-import javafx.scene.paint.Paint;
 import mm.model.physics.IEntityData;
 
 public interface IRenderer {
@@ -173,6 +172,8 @@ public interface IRenderer {
      * @return the height of the current font in pixels
      */
     float getFontHeight();
+
+    void drawTexture(int textureId, float x, float y, float w, float h, float angle);
 
     /**
      * Saves the current rendering state (such as fill and stroke color).
