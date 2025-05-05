@@ -1,0 +1,10 @@
+/*Verschiedene Riddle-Klassen:
+1. Schwerkrafträtsel: ein bestimmtes Objekt muss fallen -------------------- GravityRiddle
+        z.B. eine Kiste, welche von einer Planke gestoßen wird...
+        z.B. ein Ball der von einer Kante rollt
+2. Kollisionsrätsel: ein Objekt muss mit einem anderen Objekt kollidieren -- CollisionRiddle
+        z.B. ein Ball der gegen eine Wand rollt
+        z.B. ein Ball der gegen eine Kiste rollt
+3. Dominorätsel: ein Objekt muss eine Kettenreaktion auslösen --------------- DominoRiddle
+        z.B. ein Dominostein muss umfallen
+ */
