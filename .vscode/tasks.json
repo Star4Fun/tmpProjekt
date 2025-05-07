@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Run JavaFX via Maven",
+        "type": "cppdbg",  // Trick: wir starten über Task, kein Debug direkt
+        "request": "launch",
+        "preLaunchTask": "JavaFX: Run with Maven",
+        "program": "${workspaceFolder}/target/classes", // keine Rolle hier
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "console": "integratedTerminal"
+      }
+    ]
+  }
+  

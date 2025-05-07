@@ -7,7 +7,12 @@ public enum Sprites {
     COUNTER("counter"),
     BALL("ball"),
     LIGHT_BALL("ball_light"),
-    HEAVY_BALL("ball_heavy")
+    HEAVY_BALL("ball_heavy"),
+    DOMINO("domino"),
+    PLANK("plank"),
+    BOX("box"),
+    GEAR("gear"),
+    INDUSTRIAL_BACKGROUND("industrial_background")
 ;
 
     String spriteName;

@@ -6,6 +6,7 @@ import java.util.List;
 import org.jbox2d.common.Vec2;
 
 import javafx.scene.canvas.Canvas;
+import mm.Main;
 import mm.model.level.GameLevel;
 import mm.model.physics.CircleEntityData;
 import mm.model.physics.GameObjectCompound;
@@ -44,20 +45,26 @@ public class CrazyMachines implements RenderLoop {
         // renderer.drawTexture(Textures.BALL.id(), 10, 10, 320, 320, angle%360);
         // renderer.drawTexture(Textures.BALL.id(), 10, 10, 320, 320, angle%360);
         // renderer.drawTexture(counter.getCurrentTextureId(delta), 500f, 500f, 320f, 320f, 0f);
-        angle+=10;
-        List<GameObjectCompound> dataSnapshot = new ArrayList<>(theGameLevel.getGameWorld().getEntityData());
-        for(GameObjectCompound ggc: dataSnapshot) {
-            if(ggc.object.getShapeType() == GameObjectType.RECTANGLE) {
-                RectangleEntityData red = (RectangleEntityData) ggc.buffer.getVisible();
-                Vec2 pos = red.getScreenPosition(rw, rh);
-                renderer.drawTexture(ggc.object.getSprite().getCurrentTextureId(delta), pos.x, pos.y, red.getWidth(), red.getHeight(), red.getAngle());
-                renderer.drawRectangle(pos.x, pos.y, red.getWidth(), red.getHeight(), red.getAngle(), false, true);
-            }
-            else if(ggc.object.getShapeType() == GameObjectType.CIRCLE) {
-                CircleEntityData ced = (CircleEntityData) ggc.buffer.getVisible();
-                Vec2 pos = ced.getScreenPosition(rw, rh);
-                renderer.drawTexture(ggc.object.getSprite().getCurrentTextureId(delta), pos.x-ced.getRadius(), pos.y-ced.getRadius(), ced.getRadius()*2, ced.getRadius()*2, ced.getAngle());
-                renderer.drawCircle(pos, ced.getRadius(), false, true);
+        if(theGameLevel.getCurrentRiddle() != null) {
+            renderer.drawText(""+rw, rw/2, rh/2);
+            renderer.drawTexture(theGameLevel.getCurrentRiddle().getBackground().getCurrentTextureId(delta), 0, 0, rw, rh, 0);
+        }
+        if(Main.firstUpdateDone()) {
+            angle+=10;
+            List<GameObjectCompound> dataSnapshot = new ArrayList<>(theGameLevel.getGameWorld().getEntityData());
+            for(GameObjectCompound ggc: dataSnapshot) {
+                if(ggc.object.getShapeType() == GameObjectType.RECTANGLE) {
+                    RectangleEntityData red = (RectangleEntityData) ggc.buffer.getVisible();
+                    Vec2 pos = red.getScreenPosition(rw, rh);
+                    renderer.drawTexture(ggc.object.getSprite().getCurrentTextureId(delta), pos.x, pos.y, red.getWidth(), red.getHeight(), red.getAngle());
+                    // renderer.drawRectangle(pos.x, pos.y, red.getWidth(), red.getHeight(), red.getAngle(), false, true);
+                }
+                else if(ggc.object.getShapeType() == GameObjectType.CIRCLE) {
+                    CircleEntityData ced = (CircleEntityData) ggc.buffer.getVisible();
+                    Vec2 pos = ced.getScreenPosition(rw, rh);
+                    renderer.drawTexture(ggc.object.getSprite().getCurrentTextureId(delta), pos.x-ced.getRadius(), pos.y-ced.getRadius(), ced.getRadius()*2, ced.getRadius()*2, ced.getAngle());
+                    // renderer.drawCircle(pos, ced.getRadius(), false, true);
+                }
             }
         }
     }

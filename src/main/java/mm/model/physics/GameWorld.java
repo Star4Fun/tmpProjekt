@@ -42,16 +42,61 @@ public class GameWorld {
         return new EntityDataBufferSafe(new CircleEntityData(), new CircleEntityData());
     }
 
-    public void createRectangleGameObject(PhysicInformation pi, SpriteData s, float x, float y, float w, float h) {
+    public GameObjectCompound createRectangleGameObject(PhysicInformation pi, SpriteData s, float x, float y, float w, float h) {
         Body b = createBox(pi, x, y, w, h);
-        this.entityData.add(new GameObjectCompound(new GameObject(new Sprite(s), b, w, h), 
-        createBoxBuffer()));
+        EntityDataBufferSafe buffer = createBoxBuffer();
+        GameObjectCompound ggc = new GameObjectCompound(new GameObject(new Sprite(s), b, w, h), 
+        buffer);
+        ggc.buffer.updateAndSwap(ed -> {
+            //TODO put function central
+            if (ggc.object.getShapeType() == GameObjectType.RECTANGLE) {
+                RectangleEntityData red = (RectangleEntityData) ed;
+                red.setEntityBounds(
+                    PhysicMathUtils.getPositionInPixel(ggc.object.getBody()),
+                    ggc.object.getWidth(),
+                    ggc.object.getHeight()
+                );
+                red.setAngle((float) Math.toDegrees(-ggc.object.getBody().getAngle()));
+            }
+            else if (ggc.object.getShapeType() == GameObjectType.CIRCLE) {
+                CircleEntityData red = (CircleEntityData) ed;
+                red.setEntityBounds(
+                    PhysicMathUtils.getPositionInPixel(ggc.object.getBody()),
+                    ggc.object.getRadius()
+                );
+                red.setAngle((float) Math.toDegrees(-ggc.object.getBody().getAngle()));
+            }
+        });
+        this.entityData.add(ggc);
+        return ggc;
     }
 
-    public void createCircleGameObject(PhysicInformation pi, SpriteData s, float x, float y, float r) {
+    public GameObjectCompound createCircleGameObject(PhysicInformation pi, SpriteData s, float x, float y, float r) {
         Body b = createCircle(pi, x, y, r);
-        this.entityData.add(new GameObjectCompound(new GameObject(new Sprite(s), b, r), 
-        createCircleBuffer()));
+        EntityDataBufferSafe buffer =  createCircleBuffer();
+        GameObjectCompound ggc = new GameObjectCompound(new GameObject(new Sprite(s), b, r), 
+        buffer);
+        buffer.updateAndSwap(ed -> {
+            if (ggc.object.getShapeType() == GameObjectType.RECTANGLE) {
+                RectangleEntityData red = (RectangleEntityData) ed;
+                red.setEntityBounds(
+                    PhysicMathUtils.getPositionInPixel(ggc.object.getBody()),
+                    ggc.object.getWidth(),
+                    ggc.object.getHeight()
+                );
+                red.setAngle((float) Math.toDegrees(-ggc.object.getBody().getAngle()));
+            }
+            else if (ggc.object.getShapeType() == GameObjectType.CIRCLE) {
+                CircleEntityData red = (CircleEntityData) ed;
+                red.setEntityBounds(
+                    PhysicMathUtils.getPositionInPixel(ggc.object.getBody()),
+                    ggc.object.getRadius()
+                );
+                red.setAngle((float) Math.toDegrees(-ggc.object.getBody().getAngle()));
+            }
+        });
+        this.entityData.add(ggc);
+        return ggc;
     }
 
     /**

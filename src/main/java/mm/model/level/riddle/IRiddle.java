@@ -2,6 +2,7 @@ package mm.model.level.riddle;
 
 import mm.model.physics.GameUpdateLoop;
 import mm.model.physics.GameWorld;
+import mm.render.Sprite;
 
 public interface IRiddle {
 
@@ -18,4 +19,6 @@ public interface IRiddle {
 
     /** Setzt das Rätsel zurück in den Anfangszustand */
     void reset();
+
+    Sprite getBackground();
 }

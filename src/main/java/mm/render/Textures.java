@@ -6,7 +6,11 @@ public enum Textures {
     BALL(0, "ball.png"),
     HEAVY_BALL(1, "heavy_ball.png"),
     LIGHT_BALL(2, "light_ball.png"),
-    THREE(3, "three.gif")
+    DOMINO(3, "domino.png"),
+    PLANK(4, "plank.png"),
+    BOX(5, "box.png"),
+    GEAR(6, "gear.png"),
+    INDUSTRIAL_BACKGROUND(100, "industrial_background.png")
     ;
 
 

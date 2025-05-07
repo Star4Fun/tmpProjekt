@@ -1,0 +1,53 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "MadMachineLauncher",
+            "request": "launch",
+            "mainClass": "mm/mm.render.MadMachineLauncher",
+            "projectName": "mm"
+        },
+        {
+            "type": "java",
+            "name": "SimpleFXEngine",
+            "request": "launch",
+            "mainClass": "mm/mm.render.SimpleFXEngine",
+            "projectName": "mm"
+        },
+        {
+            "type": "java",
+            "name": "JavaFXGui",
+            "request": "launch",
+            "mainClass": "mm/mm.render.JavaFXGui",
+            "projectName": "mm",
+            "vmArgs": "-Djavafx.animation.fullspeed=true"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}",
+            "vmArgs": "-Djavafx.animation.fullspeed=true"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "mm/mm.Main",
+            "projectName": "mm",
+            "vmArgs": "-Djavafx.animation.fullspeed=true"
+        },
+        {
+            "type": "java",
+            "name": "Gui",
+            "request": "launch",
+            "mainClass": "mm/mm.gui.Gui",
+            "projectName": "mm",
+            "vmArgs": "-Djavafx.animation.fullspeed=true"
+        }
+    ]
+}

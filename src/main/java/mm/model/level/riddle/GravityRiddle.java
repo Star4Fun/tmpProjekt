@@ -2,8 +2,11 @@ package mm.model.level.riddle;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
-import mm.model.physics.GameWorld;
+
+import mm.io.SpriteData;
 import mm.model.physics.*;
+import mm.render.Sprite;
+import mm.render.Sprites;
 
 /*
 1. Schwerkrafträtsel: ein bestimmtes Objekt muss fallen -------------------- GravityRiddle
@@ -14,7 +17,7 @@ import mm.model.physics.*;
 //TODO: Rausfinden, resolve Issues: Method übergeben
 
 public class GravityRiddle implements  IRiddle {
-    private Body fallingBall;
+    private GameObjectCompound fallingBall;
     private GameWorld gameWorld;
 
     // Bildschirmkoordinaten in Pixeln
@@ -29,19 +32,16 @@ public class GravityRiddle implements  IRiddle {
     public void initialize(GameWorld welt) {
         this.gameWorld = welt;
 
-        PhysicInformation ballPhysik = new PhysicInformation();
-        ballPhysik.type = org.jbox2d.dynamics.BodyType.DYNAMIC;
-        ballPhysik.density = 1.0f;
-        ballPhysik.friction = 0.3f;
-        ballPhysik.restitution = 0.1f;
+        PhysicInformation ballPhysik = new PhysicInformation(
+            org.jbox2d.dynamics.BodyType.DYNAMIC,
+            0.3f,
+            1.0f,
+            0.1f
+        );
 
         // Körper erzeugen und Sprite binden
         SpriteData dummySprite = new SpriteData(); // Du kannst das durch ein echtes Sprite ersetzen
-        welt.createCircleGameObject(ballPhysik, dummySprite, START_X, START_Y, RADIUS);
-
-        // Den zuletzt hinzugefügten Körper merken
-        var last = welt.getEntityData().get(welt.getEntityData().size() - 1);
-        this.fallingBall = last.getGameObject().getBody();
+        this.fallingBall = welt.createCircleGameObject(ballPhysik, dummySprite, START_X, START_Y, RADIUS);
     }
 
     @Override
@@ -51,18 +51,23 @@ public class GravityRiddle implements  IRiddle {
 
     @Override
     public boolean isSolved() {
-        float yMeter = fallingBall.getPosition().y;
+        float yMeter = fallingBall.object.getBody().getPosition().y;
         float solveY = PhysicMathUtils.pixelToMeter(SOLVE_Y_PIXELS);
         return yMeter < solveY;
     }
 
     @Override
     public void reset() {
-        fallingBall.setTransform(new Vec2(
+        fallingBall.object.getBody().setTransform(new Vec2(
                 PhysicMathUtils.pixelToMeter(START_X),
                 PhysicMathUtils.pixelToMeter(START_Y)), 0f);
-        fallingBall.setLinearVelocity(new Vec2(0f, 0f));
-        fallingBall.setAngularVelocity(0f);
+        fallingBall.object.getBody().setLinearVelocity(new Vec2(0f, 0f));
+        fallingBall.object.getBody().setAngularVelocity(0f);
+    }
+
+    @Override
+    public Sprite getBackground() {
+        return Sprites.INDUSTRIAL_BACKGROUND.getSprite();
     }
 }
 

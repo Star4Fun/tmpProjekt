@@ -1,0 +1,18 @@
+{
+    "staticSprite": true,
+    "loop": true,
+    "frames": [
+        {
+            "textureId": 1,
+            "duration": 0.5
+        },
+        {
+            "textureId": 2,
+            "duration": 0.25
+        },
+        {
+            "textureId": 3,
+            "duration": 0.25
+        }
+    ]
+}

@@ -22,7 +22,7 @@ public abstract class SimpleFXRenderEngine extends Application {
     private RenderLoop renderLoop;
     private IRenderer renderer;
 
-    private boolean showFPS = false;
+    private boolean showFPS = true;
 
     @Override
     public void start(Stage primaryStage) {
@@ -58,11 +58,11 @@ public abstract class SimpleFXRenderEngine extends Application {
             public void changed(ObservableValue<? extends Number> observableValue, Number oldVal, Number newVal) {
                 if(observableValue.equals(primaryStage.widthProperty())) {
                     canvas.setWidth(newVal.doubleValue());
-                    this.app.resize(oldVal.intValue(), newVal.intValue(), (int)primaryStage.getHeight(), (int)primaryStage.getHeight());
+                    this.app.resize(oldVal.intValue(), (int)primaryStage.getHeight(), newVal.intValue(), (int)primaryStage.getHeight());
                 }
                 else if(observableValue.equals(primaryStage.heightProperty())) {
                     canvas.setHeight(newVal.doubleValue());
-                    this.app.resize((int)primaryStage.getWidth(), (int)primaryStage.getWidth(), oldVal.intValue(), newVal.intValue());
+                    this.app.resize((int)primaryStage.getWidth(), oldVal.intValue(), (int)primaryStage.getWidth(), newVal.intValue());
                 }
             }
         }.setApplicationInstance(this);
@@ -98,12 +98,12 @@ public abstract class SimpleFXRenderEngine extends Application {
                 if (elapsed >= frameDuration) {
                     gc.clearRect(0, 0, root.getWidth(), root.getHeight());
                     
-                    if(app.showFPS()) {
-                        renderer.drawText("Fps: " + Math.round(NS_TO_S/((double)(now-lastUpdate))), 0, 0);
-                    }
-                    
                     if(renderLoop != null) {
                         renderLoop.render(renderer, animationUpdateTime);
+                    }
+                    
+                    if(app.showFPS()) {
+                        renderer.drawText("Fps: " + Math.round(NS_TO_S/((double)(now-lastUpdate))), 0, 0);
                     }
 
                     lastUpdate = now;

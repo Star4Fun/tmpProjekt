@@ -8,13 +8,16 @@ import mm.model.level.GameLevel;
 
 public abstract class UpdateLoop implements Runnable {
 
-    public static final int ticksPerS = 20;
+    public static final int ticksPerS = 200;
 
     protected volatile GameLevel theGameLevel;
 
     private boolean shouldRun = true;
 
     private boolean pause = false;
+
+    //TODO put in GameLevel
+    private boolean firstRunDone = false;
 
     public abstract void init();
 
@@ -47,6 +50,7 @@ public abstract class UpdateLoop implements Runnable {
                 this.update(now - lastUpdate);
                 lastUpdate = now;
                 Thread.sleep(Math.round(targetDelay));
+                firstRunDone = true;
             }
         } catch(InterruptedException e) {
             log.error("Error in updateloop", e);
@@ -56,5 +60,10 @@ public abstract class UpdateLoop implements Runnable {
     public void setGameLevel(GameLevel gameLevel) {
         this.theGameLevel = gameLevel;
     }
+
+    public boolean firstRunDone() {
+        return firstRunDone;
+    }
+
 
 }

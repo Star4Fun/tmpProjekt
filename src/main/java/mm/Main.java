@@ -27,6 +27,10 @@ public class Main {
         System.out.println("Exiting...");
     }
 
+    public static boolean firstUpdateDone() {
+        return theUpdateLoop.firstRunDone();
+    }
+
     public static boolean renderEngineReady() {
         return MadMachineLauncher.isReady();
     }
