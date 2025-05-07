@@ -9,8 +9,12 @@ public class GameLevel {
 
     private IRiddle theRiddle;
 
-    public GameLevel() {
+    public GameLevel(IRiddle riddle) {
+        this.theRiddle = riddle;
         theWorld = new GameWorld();
+        if(this.theRiddle != null) {
+            this.theRiddle.initialize(theWorld);
+        }
         //TODO: Add way to load riddle.
     }
 

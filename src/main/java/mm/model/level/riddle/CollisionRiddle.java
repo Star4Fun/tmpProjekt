@@ -63,7 +63,7 @@ public class CollisionRiddle implements IRiddle {
 
     @Override
     public void update(float zeitDelta) {
-        gameWorld.box2dWorld.step(zeitDelta, 6, 2);
+        // gameWorld.box2dWorld.step(zeitDelta, 6, 2);
     }
 
     @Override

@@ -53,6 +53,9 @@ public class GameUpdateLoop extends UpdateLoop {
                 }
             });
         }
+        if(theGameLevel.getCurrentRiddle() != null) {
+            theGameLevel.getCurrentRiddle().update(deltaTime);
+        }
     }
 
 }
