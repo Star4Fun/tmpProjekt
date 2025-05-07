@@ -2,9 +2,15 @@
 1. Schwerkrafträtsel: ein bestimmtes Objekt muss fallen -------------------- GravityRiddle
         z.B. eine Kiste, welche von einer Planke gestoßen wird...
         z.B. ein Ball der von einer Kante rollt
+
 2. Kollisionsrätsel: ein Objekt muss mit einem anderen Objekt kollidieren -- CollisionRiddle
         z.B. ein Ball der gegen eine Wand rollt
         z.B. ein Ball der gegen eine Kiste rollt
+    Vorschläge für Erweiterungen:
+        Verschiebe das Ziel dynamisch (Bewegungspuzzle)
+        Reagiere auf mehrere Kollisionen (z. B. alle Ziele getroffen?)
+        Vermeide das Ziel (negatives Rätsel)
+
 3. Dominorätsel: ein Objekt muss eine Kettenreaktion auslösen --------------- DominoRiddle
         z.B. ein Dominostein muss umfallen
  */
