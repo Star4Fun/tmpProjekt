@@ -2,9 +2,8 @@ package mm.model.level.riddle;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.*;
-import org.jbox2d.collision.shapes.CircleShape;
 import mm.model.physics.GameWorld;
-import mm.model.physics.GameUpdateLoop;
+import mm.model.physics.*;
 
 /*
 1. Schwerkrafträtsel: ein bestimmtes Objekt muss fallen -------------------- GravityRiddle
@@ -15,52 +14,55 @@ import mm.model.physics.GameUpdateLoop;
 //TODO: Rausfinden, resolve Issues: Method übergeben
 
 public class GravityRiddle implements  IRiddle {
-    private Body ball;
+    private Body fallingBall;
     private GameWorld gameWorld;
-    private final float START_Y = 10.0f;
-    private final float SOLVE_Y = -5.0f;  // Wenn der Ball unter diese Höhe fällt → Rätsel gelöst
+
+    // Bildschirmkoordinaten in Pixeln
+    private final float START_X = 200f;
+    private final float START_Y = 100f;
+    private final float RADIUS = 20f;
+
+    // Y-Schwelle in Pixeln (wird später in Meter umgerechnet)
+    private final float SOLVE_Y_PIXELS = 500f;
 
     @Override
-//    TODO: Mit unseren Objekten implementieren.
     public void initialize(GameWorld welt) {
         this.gameWorld = welt;
-        World world = welt.getBox2DWorld();
 
-        // Ball erzeugen
-        BodyDef ballDef = new BodyDef();
-        ballDef.type = BodyType.DYNAMIC;
-        ballDef.position.set(0f, START_Y);
-        ball = world.createBody(ballDef);
+        PhysicInformation ballPhysik = new PhysicInformation();
+        ballPhysik.type = org.jbox2d.dynamics.BodyType.DYNAMIC;
+        ballPhysik.density = 1.0f;
+        ballPhysik.friction = 0.3f;
+        ballPhysik.restitution = 0.1f;
 
-        CircleShape shape = new CircleShape();
-        shape.m_radius = 0.5f;
+        // Körper erzeugen und Sprite binden
+        SpriteData dummySprite = new SpriteData(); // Du kannst das durch ein echtes Sprite ersetzen
+        welt.createCircleGameObject(ballPhysik, dummySprite, START_X, START_Y, RADIUS);
 
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.density = 1.0f;
-        fixtureDef.friction = 0.3f;
-        fixtureDef.restitution = 0.1f; // etwas Bounciness, falls gewünscht
-
-        ball.createFixture(fixtureDef);
+        // Den zuletzt hinzugefügten Körper merken
+        var last = welt.getEntityData().get(welt.getEntityData().size() - 1);
+        this.fallingBall = last.getGameObject().getBody();
     }
 
     @Override
-//    TODO: Kontrollieren, ob GameUpdateLoop.update() funktioniert oder ob das falsch ist.
     public void update(float zeitDelta) {
-        GameUpdateLoop gameUpdateLoop = new GameUpdateLoop();
-        gameUpdateLoop.update(zeitDelta);
+        gameWorld.box2dWorld.step(zeitDelta, 6, 2);
     }
 
     @Override
     public boolean isSolved() {
-        return ball.getPosition().y < SOLVE_Y;
+        float yMeter = fallingBall.getPosition().y;
+        float solveY = PhysicMathUtils.pixelToMeter(SOLVE_Y_PIXELS);
+        return yMeter < solveY;
     }
 
     @Override
     public void reset() {
-        ball.setTransform(new Vec2(0f, START_Y), 0f);
-        ball.setLinearVelocity(new Vec2(0f, 0f));
-        ball.setAngularVelocity(0f);
+        fallingBall.setTransform(new Vec2(
+                PhysicMathUtils.pixelToMeter(START_X),
+                PhysicMathUtils.pixelToMeter(START_Y)), 0f);
+        fallingBall.setLinearVelocity(new Vec2(0f, 0f));
+        fallingBall.setAngularVelocity(0f);
     }
 }
 
