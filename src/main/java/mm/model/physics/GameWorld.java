@@ -43,7 +43,11 @@ public class GameWorld {
     }
 
     public GameObjectCompound createRectangleGameObject(PhysicInformation pi, SpriteData s, float x, float y, float w, float h) {
-        Body b = createBox(pi, x, y, w, h);
+        return createRectangleGameObject(pi, s, x, y, w, h, 0f); // default angle = 0°
+    }
+
+    public GameObjectCompound createRectangleGameObject(PhysicInformation pi, SpriteData s, float x, float y, float w, float h, float angleDegrees) {
+        Body b = createBox(pi, x, y, w, h, angleDegrees);
         EntityDataBufferSafe buffer = createBoxBuffer();
         GameObjectCompound ggc = new GameObjectCompound(new GameObject(new Sprite(s), b, w, h), 
         buffer);
@@ -126,12 +130,13 @@ public class GameWorld {
         return body;
     }
 
-    public Body createBox(PhysicInformation pi, float x, float y, float w, float h) {
+    public Body createBox(PhysicInformation pi, float x, float y, float w, float h, float angleDegrees) {
         PolygonShape s = new PolygonShape();
 		s.setAsBox(PhysicMathUtils.pixelToMeter(w/2), PhysicMathUtils.pixelToMeter(h/2));
         BodyDef body = new BodyDef();
         body.type = pi.type;
         body.position = new Vec2(PhysicMathUtils.pixelToMeter(x+w/2), PhysicMathUtils.pixelToMeter(y+h/2));
+        body.angle = (float) Math.toRadians(angleDegrees);
         body.active = true;
 
         FixtureDef fixture = new FixtureDef();
