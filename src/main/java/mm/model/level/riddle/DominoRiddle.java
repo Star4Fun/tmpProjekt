@@ -23,12 +23,17 @@ public class DominoRiddle implements IRiddle {
     private final float START_X = 1200f;
     private final float START_Y = 1100f;
 
+    private boolean isSolvedState = false;
+    private float solvedTimer = 0f;
+    private static final float RESET_DELAY = 3f; // Sekunden
+
      private final Body[] dominos = new Body[DOMINO_COUNT];
 //     private GameWorld gameWorld;
 
      @Override
      public void initialize(GameWorld welt) {
          this.gameWorld = welt;
+         SpriteData dominoSprite = Sprites.DOMINO.getSpriteData();  //new SpriteData();
 
          welt.createRectangleGameObject(PhysicInformation.STATIC_DEFAULT, Sprites.DOMINO.getSpriteData(), 0, 0, 1920, 50);
          welt.createCircleGameObject(new PhysicInformation(BodyType.DYNAMIC, 0.5f, 0.4f,
@@ -42,7 +47,6 @@ public class DominoRiddle implements IRiddle {
                  0.1f
          );
 
-         SpriteData dominoSprite = Sprites.DOMINO.getSpriteData();  //new SpriteData();
 
          for (int i = 0; i < DOMINO_COUNT; i++) {
              float x = START_X + i * (DOMINO_SPACING + DOMINO_WIDTH);
@@ -50,20 +54,39 @@ public class DominoRiddle implements IRiddle {
 
 //             welt.createRectangleGameObject(dominoPhysik, dominoSprite, x, y, DOMINO_WIDTH, DOMINO_HEIGHT);
 //             var body = welt.getEntityData().get(welt.getEntityData().size() - 1).getGameObject().getBody();
-//             dominos[i] = body;
              this.dominoCompound = welt.createRectangleGameObject(dominoPhysik, dominoSprite, x, y, DOMINO_WIDTH, DOMINO_HEIGHT);
+             dominos[i] = dominoCompound.object.getBody();
          }
      }
 
      @Override
      public void update(float zeitDelta) {
          // gameWorld.box2dWorld.step(zeitDelta, 6, 2);
+         if (!isSolvedState && isSolved()) {
+             isSolvedState = true;
+             solvedTimer = RESET_DELAY;
+             System.out.println("Puzzle solved! Resetting in " + RESET_DELAY + " seconds...");
+         }
+
+         if (isSolvedState) {
+             solvedTimer -= zeitDelta;
+             if (solvedTimer <= 0f) {
+                 reset();
+                 isSolvedState = false;
+                 System.out.println("Puzzle has been reset.");
+             }
+         }
      }
 
      @Override
      public boolean isSolved() {
-         Body last = dominos[DOMINO_COUNT - 1];
-         return Math.abs(last.getAngle()) > 0.3; // etwa 17° Neigung
+//         Body last = dominos[DOMINO_COUNT - 1];
+//         return Math.abs(last.getAngle()) > 0.3; // etwa 17° Neigung, dann gelöst
+         if (dominos[DOMINO_COUNT - 1] == null) {
+             System.err.println("Error: Last domino body is null!");
+             return false;
+         }
+         return Math.abs(dominos[DOMINO_COUNT - 1].getAngle()) > 0.3f;
      }
 
      @Override
