@@ -1,5 +1,7 @@
 package mm.model.physics;
 
+import mm.model.level.riddle.CollisionRiddle;
+import mm.model.level.riddle.DominoRiddle;
 import org.jbox2d.dynamics.BodyType;
 
 import mm.Main;
@@ -12,7 +14,7 @@ public class GameUpdateLoop extends UpdateLoop {
 
     @Override
     public void init() {
-        Main.setGameLevel(new GameLevel(new TestRiddle()));
+        Main.setGameLevel(new GameLevel(new DominoRiddle()));  //TestRiddle()));
     }
 
     @Override
