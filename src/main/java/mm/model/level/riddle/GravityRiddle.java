@@ -1,9 +1,7 @@
 package mm.model.level.riddle;
 
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.*;
 
-import mm.io.SpriteData;
 import mm.model.physics.*;
 import mm.render.Sprite;
 import mm.render.Sprites;
@@ -30,7 +28,7 @@ public class GravityRiddle implements  IRiddle {
 
     private boolean isSolvedState = false;
     private float solvedTimer = 0f;
-    private static final float RESET_DELAY = 3f; // Sekunden
+    private static final float RESET_DELAY = 3000f; // Sekunden
 
     @Override
     public void initialize(GameWorld welt) {
@@ -44,9 +42,9 @@ public class GravityRiddle implements  IRiddle {
         );
 
         welt.createRectangleGameObject(PhysicInformation.STATIC_DEFAULT, Sprites.DOMINO.getSpriteData(), 0, 0, 1920, 50);
-        this.fallingBall = welt.createCircleGameObject(PhysicsProfiles.BALL, Sprites.BALL.getSpriteData(), START_X, START_Y, (5*0.2f)*PhysicMathUtils.ratio);
+        this.fallingBall = welt.createCircleGameObject(PhysicProfile.BALL, Sprites.BALL.getSpriteData(), START_X, START_Y, (5*0.2f)*PhysicMathUtils.ratio);
         welt.createRectangleGameObject(PhysicInformation.STATIC_DEFAULT, Sprites.PLANK.getSpriteData(), 100, 250, 200f, 50f, -45f);
-        welt.createCircleGameObject(PhysicsProfiles.GEAR, Sprites.GEAR.getSpriteData(), 300, 200, (5*0.1f)*PhysicMathUtils.ratio);
+        welt.createCircleGameObject(PhysicProfile.GEAR, Sprites.GEAR.getSpriteData(), 300, 200, (5*0.1f)*PhysicMathUtils.ratio);
 
     }
 
