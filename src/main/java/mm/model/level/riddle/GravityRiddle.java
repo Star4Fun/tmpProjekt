@@ -22,11 +22,15 @@ public class GravityRiddle implements  IRiddle {
 
     // Bildschirmkoordinaten in Pixeln
     private final float START_X = 200f;
-    private final float START_Y = 100f;
+    private final float START_Y = 500f;
     private final float RADIUS = 20f;
 
     // Y-Schwelle in Pixeln (wird später in Meter umgerechnet)
-    private final float SOLVE_Y_PIXELS = 500f;
+    private final float SOLVE_Y_PIXELS = 100f;
+
+    private boolean isSolvedState = false;
+    private float solvedTimer = 0f;
+    private static final float RESET_DELAY = 3f; // Sekunden
 
     @Override
     public void initialize(GameWorld welt) {
@@ -39,14 +43,30 @@ public class GravityRiddle implements  IRiddle {
             0.1f
         );
 
-        // Körper erzeugen und Sprite binden
-        SpriteData dummySprite = new SpriteData(); // Du kannst das durch ein echtes Sprite ersetzen
-        this.fallingBall = welt.createCircleGameObject(ballPhysik, dummySprite, START_X, START_Y, RADIUS);
+        welt.createRectangleGameObject(PhysicInformation.STATIC_DEFAULT, Sprites.DOMINO.getSpriteData(), 0, 0, 1920, 50);
+        this.fallingBall = welt.createCircleGameObject(PhysicsProfiles.BALL, Sprites.BALL.getSpriteData(), START_X, START_Y, (5*0.2f)*PhysicMathUtils.ratio);
+        welt.createRectangleGameObject(PhysicInformation.STATIC_DEFAULT, Sprites.PLANK.getSpriteData(), 100, 250, 200f, 50f, -45f);
+        welt.createCircleGameObject(PhysicsProfiles.GEAR, Sprites.GEAR.getSpriteData(), 300, 200, (5*0.1f)*PhysicMathUtils.ratio);
+
     }
 
     @Override
     public void update(float zeitDelta) {
-        // gameWorld.box2dWorld.step(zeitDelta, 6, 2);
+        // Solved-Status überprüfen
+        if (!isSolvedState && isSolved()) {
+            isSolvedState = true;
+            solvedTimer = RESET_DELAY;
+            System.out.println("Puzzle solved! Resetting in " + RESET_DELAY + " seconds...");
+        }
+
+        if (isSolvedState) {
+            solvedTimer -= zeitDelta;
+            if (solvedTimer <= 0f) {
+                reset();
+                isSolvedState = false;
+                System.out.println("Puzzle has been reset.");
+            }
+        }
     }
 
     @Override
