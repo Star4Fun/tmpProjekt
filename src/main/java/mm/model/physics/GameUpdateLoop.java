@@ -14,7 +14,7 @@ public class GameUpdateLoop extends UpdateLoop {
 
     @Override
     public void init() {
-        Main.setGameLevel(new GameLevel(new CollisionRiddle()));  //TestRiddle()));
+        Main.setGameLevel(new GameLevel(new GravityRiddle()));  //TestRiddle()));
     }
 
     @Override
