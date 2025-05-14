@@ -2,7 +2,7 @@ package mm.model.physics;
 
 import org.jbox2d.dynamics.BodyType;
 
-public class PhysicsProfiles {
+public class PhysicProfile {
     public static final PhysicInformation STATIC_DEFAULT = new PhysicInformation(
             BodyType.STATIC, 0.0f, 0.0f, 0.6f
     );
