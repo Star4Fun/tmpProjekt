@@ -1,7 +1,6 @@
 package mm.model.level.riddle;
 
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.*;
 
 import mm.io.SpriteData;
 import mm.model.physics.*;
@@ -24,19 +23,36 @@ public class CollisionRiddle implements IRiddle {
     private boolean solved = false;
     private boolean isSolvedState = false;
     private float solvedTimer = 0f;
-    private static final float RESET_DELAY = 3f; // Sekunden
+    private static final float RESET_DELAY = 3000f; // Sekunden
+    private float secondsCount = 0f;
+
+
 
     @Override
     public void initialize(GameWorld welt) {
         this.gameWorld = welt;
-        SpriteData ballSprite = Sprites.BALL.getSpriteData();
-        SpriteData boxSprite = Sprites.BOX.getSpriteData();
-        PhysicInformation ballPhysics = new PhysicInformation(
-                BodyType.DYNAMIC, 0.5f, 0.4f, 0.75f);
-        PhysicInformation boxPhysics = new PhysicInformation(
-                BodyType.DYNAMIC, 0.3f, 0.3f, 0.1f);
-        welt.createRectangleGameObject(PhysicInformation.STATIC_DEFAULT, Sprites.DOMINO.getSpriteData(), 0, 0, 1920, 50);
+        // Weltboden
+        welt.createRectangleGameObject(PhysicInformation.STATIC_DEFAULT, Sprites.DOMINO.getSpriteData(), 0, 0, 1920, 10);
 
+        float startX = 100f;  // Abstand zur Wand
+        float startY = 1200f;  // Höhe in Pixeln
+        float radius = (5*0.2f)*PhysicMathUtils.ratio;
+
+        // Ziel weiter rechts
+        float targetX = 600f;
+        float targetY = 100f;
+        float targetSize = 100f;
+
+        // Erstelle die Objekte
+        GameObjectCompound BallCompound = welt.createCircleGameObject(PhysicProfile.BALL, Sprites.BALL.getSpriteData(), startX, startY-100, radius);
+        Body ball = BallCompound.object.getBody();
+        GameObjectCompound HeavyBallCompound = welt.createCircleGameObject(PhysicProfile.HEAVY_BALL, Sprites.HEAVY_BALL.getSpriteData(), startX, startY, radius);
+        Body heavyBall = HeavyBallCompound.object.getBody();
+
+        // Erstelle das Zielobjekt
+        GameObjectCompound BoxCompund = welt.createRectangleGameObject(PhysicProfile.BOX, Sprites.BOX.getSpriteData(), targetX, targetY, targetSize, targetSize);
+        Body target = BoxCompund.object.getBody();
+        welt.createRectangleGameObject(PhysicInformation.STATIC_DEFAULT, Sprites.DOMINO.getSpriteData(), 50, 150, 50f, 200f, 45f);
 
 
         // Contact Listener hinzufügen
@@ -56,18 +72,6 @@ public class CollisionRiddle implements IRiddle {
          @Override public void postSolve(Contact contact, ContactImpulse impulse) {}
      });
 
-    float startX = 100f;  // Abstand zur Wand
-    float startY = 1200f;  // Höhe in Pixeln
-    float radius = (5*0.2f)*PhysicMathUtils.ratio;
-
-     // Ziel weiter rechts
-    float targetX = 600f;
-    float targetY = 100f;
-    float targetSize = 100f;
-
-    welt.createCircleGameObject(ballPhysics, ballSprite, startX, startY, radius);
-    welt.createRectangleGameObject(boxPhysics, boxSprite, targetX, targetY, targetSize, targetSize);
-    welt.createRectangleGameObject(PhysicInformation.STATIC_DEFAULT, Sprites.DOMINO.getSpriteData(), 50, 150, 50f, 200f, 45f);
 
 
 //     var data = welt.getEntityData();
@@ -81,7 +85,8 @@ public class CollisionRiddle implements IRiddle {
         if (!isSolvedState && isSolved()) {
             isSolvedState = true;
             solvedTimer = RESET_DELAY;
-            System.out.println("Puzzle solved! Resetting in " + RESET_DELAY + " seconds...");
+            secondsCount = RESET_DELAY/1000f;
+            System.out.println("Puzzle solved! Resetting in " + secondsCount + " seconds...");
         }
 
         if (isSolvedState) {
