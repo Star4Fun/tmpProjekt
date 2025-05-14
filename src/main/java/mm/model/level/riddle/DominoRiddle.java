@@ -35,7 +35,7 @@ public class DominoRiddle implements IRiddle {
          this.gameWorld = welt;
          SpriteData dominoSprite = Sprites.DOMINO.getSpriteData();  //new SpriteData();
 
-         welt.createRectangleGameObject(new PhysicInformation(BodyType.STATIC, 0.5f, 0f, 10.1f), Sprites.DOMINO.getSpriteData(), 0, 0, 1920, 50);
+         welt.createRectangleGameObject(PhysicInformation.STATIC_DEFAULT, Sprites.DOMINO.getSpriteData(), 0, 0, 1920, 50);
          welt.createCircleGameObject(new PhysicInformation(BodyType.DYNAMIC, 0.5f, 0.4f,
                          0.75f), Sprites.BALL.getSpriteData(), 300, 1080-200, (5*0.2f)*PhysicMathUtils.ratio);
          welt.createRectangleGameObject(PhysicInformation.STATIC_DEFAULT, Sprites.DOMINO.getSpriteData(), 200, 150, DOMINO_WIDTH, DOMINO_HEIGHT, 45f);
